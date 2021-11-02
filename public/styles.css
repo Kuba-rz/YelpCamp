@@ -1,0 +1,31 @@
+.inline {
+    display:inline;
+}
+
+form div {
+    margin-bottom: 10px;
+}
+
+button a,button a:hover {
+    color: white;
+    text-decoration: none;
+}
+
+.navbar {
+    background-color: #606c38;
+}
+
+footer div span {
+    color:white;
+}
+
+#camp-img {
+    max-height:500px;
+    width: auto;
+    max-width:400px;
+}
+
+div.mt button {
+    margin-bottom: 10px;
+    margin-top: 10px;
+}
