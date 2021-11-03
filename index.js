@@ -80,6 +80,7 @@ app.put('/campgrounds/:id', async (req, res) => {
     res.redirect(`/campgrounds/${id}`)
 })
 
+//Route to delete a specific campground
 app.delete('/campgrounds/:id', async (req, res) => {
     const id = req.params.id
     await campground.findByIdAndDelete(id)
