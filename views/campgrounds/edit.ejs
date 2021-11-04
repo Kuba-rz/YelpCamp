@@ -4,33 +4,46 @@
         <div class='col-6'>
             <h1 class='text-center display-5'>Edit <%=camp.title%>
             </h1>
-            <form action='/campgrounds/<%=camp.id%>?_method=PUT' method='POST'>
+            <form action='/campgrounds/<%=camp.id%>?_method=PUT' method='POST' novalidate class='validation-required'>
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Title"
                         name='title' required autocomplete='off' value='<%=camp.title%>'>
-                    <small class="form-text text-muted">Required</small>
+                    <div class="invalid-feedback">
+                        Please include a title
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="location">Location</label>
                     <input type="text" class="form-control" id="location" name='location' placeholder="Location"
                         required value='<%=camp.location%>'>
-                    <small class="form-text text-muted">Required</small>
+                    <div class="invalid-feedback">
+                        Please include the location
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="image">Image url</label>
                     <input type="text" class="form-control" id="image" name='image' placeholder="Image"
-                        value='<%=camp.image%>'>
+                        value='<%=camp.image%>' required>
+                    <div class="invalid-feedback">
+                        Please include an image of the campground
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea class='form-control' name="description" id="description" placeholder='Description'
-                        cols="30" rows="5"><%=camp.description%></textarea>
+                    <textarea class='form-control' name="description" id="description" required
+                        placeholder='Description' cols="30" rows="5"><%=camp.description%></textarea>
+                    <div class="invalid-feedback">
+                        Please include a description
+                    </div>
                 </div>
                 <div class="form-group">
                     <label for="price">Price</label>
                     <input type="text" class="form-control" id="price" name='price' placeholder="Price"
-                        value='<%=camp.price%>'>
+                        value='<%=camp.price%>' required>
+                    <div class="invalid-feedback">
+                        Please include the price for a night
+                    </div>
                 </div>
                 <div class="row d-flex justify-content-center">
                     <div class="col-2">
