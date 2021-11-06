@@ -8,11 +8,21 @@ const campgroundSchema = new schema({
     },
     price: {
         type: Number,
-        //required: true
+        required: true
     },
-    image: String,
-    description: String,
-    location: String
+    image: {
+        type: String,
+        required: true
+    }
+    ,
+    description: {
+        type: String,
+        required: true
+    },
+    location: {
+        type: String,
+        required: true
+    }
 })
 
 
