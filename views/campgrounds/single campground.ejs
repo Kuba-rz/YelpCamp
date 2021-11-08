@@ -29,7 +29,32 @@
                         <button class='btn card-link btn-danger'>Delete</button>
                     </form>
                     <button class='btn btn-primary card-link'><a href='/campgrounds'>All campgrounds</a></button>
+                    <button class='btn btn-primary'><a href="/campgrounds/<%=camp.id%>/review">Add a review</a></button>
                 </div>
             </div>
+            <form action='/campgrounds/<%=camp.id%>/review' method='POST' novalidate class='validation-required'>
+                <h3 class='mt-5 text-center'>Leave a review for <%=camp.title.toLowerCase()%>
+                </h3>
+                <div class="form-group">
+                    <label for="body">Review</label>
+                    <textarea class='form-control' name="body" id="body" placeholder='Review' cols="30" rows="5"
+                        required></textarea>
+                    <div class="invalid-feedback">
+                        Please include a review
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="rating">Rating</label>
+                    <input type='range' class='form-range' name="rating" id="rating" min='1' max='5' required></input>
+                    <div class="invalid-feedback">
+                        Please leave a rating
+                    </div>
+                </div>
+                <div class="row d-flex justify-content-center">
+                    <div class="col-2">
+                        <button type="submit" class="mt-2 btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>

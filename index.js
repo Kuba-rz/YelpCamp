@@ -3,11 +3,13 @@ const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const path = require('path')
 const campground = require('./models/campground')
+const review = require('./models/review')
 const ejsMate = require('ejs-mate')
 const expressError = require('./helpers/expressError')
 const functions = require('./helpers/functionHelpers')
 const catchAsync = functions.catchAsync
 const validateCampground = functions.validateCampground
+const validateReview = functions.validateReview
 
 async function connectMongo() {
     try {
@@ -68,6 +70,16 @@ app.get('/campgrounds/:id', catchAsync(async (req, res) => {
     const camp = await campground.findById(id)
     res.locals.title = camp.title
     res.render('campgrounds/single campground', { camp })
+}))
+
+app.post('/campgrounds/:id/review', validateReview, catchAsync(async (req, res) => {
+    const { body, rating } = req.body
+    const camp = await campground.findById(req.params.id)
+    const rev = new review({ body, rating })
+    camp.reviews.push(rev)
+    const result = await camp.save()
+    await rev.save()
+    res.redirect(`/campgrounds/${camp.id}`)
 }))
 
 app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {

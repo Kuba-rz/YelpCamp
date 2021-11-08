@@ -22,7 +22,13 @@ const campgroundSchema = new schema({
     location: {
         type: String,
         required: true
-    }
+    },
+    reviews: [
+        {
+            type: schema.Types.ObjectId,
+            ref: 'Review'
+        }
+    ]
 })
 
 

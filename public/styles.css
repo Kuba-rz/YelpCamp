@@ -11,8 +11,9 @@ button a,button a:hover {
     text-decoration: none;
 }
 
-.navbar {
-    background-color: #606c38;
+.navbar, .footer {
+    background-color: #2D2424;
+    32502E
 }
 
 footer div span {
