@@ -13,7 +13,6 @@ button a,button a:hover {
 
 .navbar, .footer {
     background-color: #2D2424;
-    32502E
 }
 
 footer div span {
@@ -35,3 +34,7 @@ div.mt button {
     position: relative;
     left: 330px;
 }
+
+ .review-body {
+     word-wrap: break-word
+ }

@@ -67,7 +67,7 @@ app.get('/campgrounds/edit', catchAsync(async (req, res) => {
 
 app.get('/campgrounds/:id', catchAsync(async (req, res) => {
     const id = req.params.id
-    const camp = await campground.findById(id)
+    const camp = await campground.findById(id).populate('reviews')
     res.locals.title = camp.title
     res.render('campgrounds/single campground', { camp })
 }))
@@ -80,6 +80,18 @@ app.post('/campgrounds/:id/review', validateReview, catchAsync(async (req, res) 
     const result = await camp.save()
     await rev.save()
     res.redirect(`/campgrounds/${camp.id}`)
+}))
+
+app.delete('/campgrounds/:campid/review/:id', catchAsync(async (req, res) => {
+    const reviewId = req.params.id
+    await review.findByIdAndDelete(reviewId)
+    const campId = req.params.campid
+    const camp = await campground.findById(campId)
+    const reviewIndex = camp.reviews.indexOf(reviewId)
+    camp.reviews.splice(reviewIndex, 1)
+    await camp.save()
+
+    res.redirect(`/campgrounds/${campId}`)
 }))
 
 app.post('/campgrounds', validateCampground, catchAsync(async (req, res, next) => {

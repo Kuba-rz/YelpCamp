@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const review = require('./review')
 const schema = mongoose.Schema
 
 const campgroundSchema = new schema({
@@ -29,6 +30,12 @@ const campgroundSchema = new schema({
             ref: 'Review'
         }
     ]
+})
+
+campgroundSchema.post('findOneAndDelete', async camp => {
+    if (camp.reviews.length) {
+        await review.deleteMany({ _id: { $in: camp.reviews } })
+    }
 })
 
 

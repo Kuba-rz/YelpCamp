@@ -1,13 +1,11 @@
 <% layout ('partials/boiletplate.ejs') %>
 
-    <div class="row justify-content-center">
-        <div class="col-6 justify-content-center">
+    <div class="row justify-content-around">
+        <h1 class='text-center display-3'>
+            <%=camp.title%>
+        </h1>
+        <div class="col-6 mb-3 mt-3 justify-content-center">
             <div class="card">
-                <h5 class="display-5 mb-3 card-title text-center">
-                    <u>
-                        <%=camp.title%>
-                    </u>
-                </h5>
                 <img class="img-fluid card-img-top" src="<%=camp.image%>" alt="Card image cap">
                 <div class="card-body">
                     <p class="card-text">
@@ -29,11 +27,12 @@
                         <button class='btn card-link btn-danger'>Delete</button>
                     </form>
                     <button class='btn btn-primary card-link'><a href='/campgrounds'>All campgrounds</a></button>
-                    <button class='btn btn-primary'><a href="/campgrounds/<%=camp.id%>/review">Add a review</a></button>
                 </div>
             </div>
+        </div>
+        <div class="col-4">
             <form action='/campgrounds/<%=camp.id%>/review' method='POST' novalidate class='validation-required'>
-                <h3 class='mt-5 text-center'>Leave a review for <%=camp.title.toLowerCase()%>
+                <h3 class='mt-3 text-center'>Leave a review for <%=camp.title.toLowerCase()%>
                 </h3>
                 <div class="form-group">
                     <label for="body">Review</label>
@@ -56,5 +55,28 @@
                     </div>
                 </div>
             </form>
+            <ul>
+                <h3>Reviews:</h3>
+                <hr>
+                <% for (let review of camp.reviews){ %>
+                    <p class='mb-1'><b>Review:</b>
+                        <span class='review-body'>
+                            <%=review.body%>
+                        </span>
+                    </p>
+                    <div class='review-delete-div'>
+                        <p class='mb-3'><b>Rating:</b>
+                            <%=review.rating%>
+                                <form class='review-delete-form'
+                                    action="/campgrounds/<%=camp.id%>/review/<%=review.id%>?_method=DELETE"
+                                    method='POST'>
+                                    <button id='review-delete-btn' class='btn btn-danger'>Delete</button>
+                                </form>
+                        </p>
+                    </div>
+                    <hr>
+                    <% } %>
+            </ul>
         </div>
+    </div>
     </div>
