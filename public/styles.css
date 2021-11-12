@@ -38,3 +38,7 @@ div.mt button {
  .review-body {
      word-wrap: break-word
  }
+
+ #body-div {
+     margin-top: 80px;
+ }

@@ -3,6 +3,8 @@ const mongoose = require('mongoose')
 const methodOverride = require('method-override')
 const path = require('path')
 const ejsMate = require('ejs-mate')
+const session = require('express-session')
+const flash = require('connect-flash')
 
 const expressError = require('./helpers/expressError')
 
@@ -36,6 +38,19 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+const sessionConfig = {
+    secret: 'thisisnotagoodsecret',
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        httpOnly: true,
+        expires: Date.now() + 1000 * 60 * 60 * 24 * 7,
+        maxAge: 1000 * 60 * 60 * 24 * 7
+    }
+}
+app.use(session(sessionConfig))
+app.use(flash())
+
 app.listen(3000, () => {
     console.log('Listening on port 3000')
 })
@@ -44,6 +59,12 @@ app.listen(3000, () => {
 app.get('/', (req, res) => {
     res.locals.title = 'Home'
     res.render('campgrounds/homepage')
+})
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success')
+    res.locals.error = req.flash('error')
+    next()
 })
 
 app.use('/campgrounds', campgroundRoutes)

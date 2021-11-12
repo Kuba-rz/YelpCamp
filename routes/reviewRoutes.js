@@ -15,6 +15,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
     camp.reviews.push(rev)
     const result = await camp.save()
     await rev.save()
+    req.flash('success', 'Review has been added')
     res.redirect(`/campgrounds/${camp.id}`)
 }))
 
@@ -26,7 +27,7 @@ router.delete('/:id', catchAsync(async (req, res) => {
     const reviewIndex = camp.reviews.indexOf(reviewId)
     camp.reviews.splice(reviewIndex, 1)
     await camp.save()
-
+    req.flash('success', 'Review has been deleted')
     res.redirect(`/campgrounds/${campId}`)
 }))
 

@@ -26,9 +26,14 @@ router.get('/edit', catchAsync(async (req, res) => {
 
 router.get('/:id', catchAsync(async (req, res) => {
     const id = req.params.id
-    const camp = await campground.findById(id).populate('reviews')
-    res.locals.title = camp.title
-    res.render('campgrounds/single campground', { camp })
+    try {
+        const camp = await campground.findById(id).populate('reviews')
+        res.locals.title = camp.title
+        res.render('campgrounds/single campground', { camp })
+    } catch {
+        req.flash('error', 'Cannot find the specified campground')
+        res.redirect('/campgrounds')
+    }
 }))
 
 router.post('/', validateCampground, catchAsync(async (req, res, next) => {
@@ -36,6 +41,7 @@ router.post('/', validateCampground, catchAsync(async (req, res, next) => {
     res.locals.title = 'Error'
     const newCamp = new campground({ title, price, image, description, location })
     await newCamp.save()
+    req.flash('success', 'New campground has been succesfully added')
     res.redirect(`/campgrounds/${newCamp._id}`)
 }))
 
@@ -50,6 +56,7 @@ router.put('/:id', validateCampground, catchAsync(async (req, res) => {
 router.delete('/:id', catchAsync(async (req, res) => {
     const id = req.params.id
     await campground.findByIdAndDelete(id)
+    req.flash('success', 'Campground has been succesfully deleted')
     res.redirect('/campgrounds')
 }))
 
