@@ -5,11 +5,15 @@ const path = require('path')
 const ejsMate = require('ejs-mate')
 const session = require('express-session')
 const flash = require('connect-flash')
+const passport = require('passport')
+const passportLocal = require('passport-local')
+const User = require('./models/user')
 
 const expressError = require('./helpers/expressError')
 
 const campgroundRoutes = require('./routes/campgroundRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
+const registerRoutes = require('./routes/registerRoutes')
 
 
 //Connect the app to mongoose
@@ -51,8 +55,24 @@ const sessionConfig = {
 app.use(session(sessionConfig))
 app.use(flash())
 
+app.use(passport.initialize())
+app.use(passport.session())
+
+passport.use(new passportLocal(User.authenticate()))
+
+passport.serializeUser(User.serializeUser())
+passport.deserializeUser(User.deserializeUser())
+
+
 app.listen(3000, () => {
     console.log('Listening on port 3000')
+})
+
+
+app.use((req, res, next) => {
+    res.locals.success = req.flash('success')
+    res.locals.error = req.flash('error')
+    next()
 })
 
 
@@ -61,15 +81,15 @@ app.get('/', (req, res) => {
     res.render('campgrounds/homepage')
 })
 
-app.use((req, res, next) => {
-    res.locals.success = req.flash('success')
-    res.locals.error = req.flash('error')
-    next()
-})
 
+
+//The differnet routes which are specified in different files
 app.use('/campgrounds', campgroundRoutes)
 
 app.use('/campgrounds/:campid/review', reviewRoutes)
+
+app.use('/register', registerRoutes)
+
 
 app.use((req, res, next) => {
     throw new expressError('Cannot find the specified webpage!', 404)
