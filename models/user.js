@@ -5,7 +5,7 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, 'The email field must be provided'],
-        unique: [true, 'The email address has already been used before']
+        unique: [true, 'The email address has already been registered before']
     }
 })
 

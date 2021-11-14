@@ -5,6 +5,7 @@ const campground = require('../models/campground')
 const functions = require('../helpers/functionHelpers')
 const catchAsync = functions.catchAsync
 const validateCampground = functions.validateCampground
+const isLoggedIn = functions.isLoggedIn
 
 router.get('/', catchAsync(async (req, res) => {
     res.locals.title = 'Campgrounds'
@@ -12,7 +13,7 @@ router.get('/', catchAsync(async (req, res) => {
     res.render('campgrounds/campgrounds', { foundCampgrounds })
 }))
 
-router.get('/new', (req, res) => {
+router.get('/new', isLoggedIn, (req, res) => {
     res.locals.title = 'New'
     res.render('campgrounds/new')
 })
@@ -36,7 +37,7 @@ router.get('/:id', catchAsync(async (req, res) => {
     }
 }))
 
-router.post('/', validateCampground, catchAsync(async (req, res, next) => {
+router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
     const { title, price, image, description, location } = req.body
     res.locals.title = 'Error'
     const newCamp = new campground({ title, price, image, description, location })

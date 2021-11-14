@@ -14,6 +14,7 @@ const expressError = require('./helpers/expressError')
 const campgroundRoutes = require('./routes/campgroundRoutes')
 const reviewRoutes = require('./routes/reviewRoutes')
 const registerRoutes = require('./routes/registerRoutes')
+const loginRoutes = require('./routes/loginRoutes')
 
 
 //Connect the app to mongoose
@@ -89,6 +90,8 @@ app.use('/campgrounds', campgroundRoutes)
 app.use('/campgrounds/:campid/review', reviewRoutes)
 
 app.use('/register', registerRoutes)
+
+app.use('/login', loginRoutes)
 
 
 app.use((req, res, next) => {

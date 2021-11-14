@@ -7,6 +7,14 @@ function catchAsync(fn) {
     }
 }
 
+function isLoggedIn(req, res, next) {
+    if (!req.isAuthenticated()) {
+        req.flash('error', 'You need to log in first')
+        return res.redirect('/login')
+    }
+    next()
+}
+
 function validateCampground(req, res, next) {
     const { title, price, image, description, location } = req.body
     const campgroundSchema = joi.object({
@@ -45,5 +53,6 @@ function validateReview(req, res, next) {
 module.exports = {
     catchAsync,
     validateCampground,
-    validateReview
+    validateReview,
+    isLoggedIn
 }

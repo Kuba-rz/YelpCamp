@@ -18,7 +18,7 @@ router.post('/', catchAsync(async (req, res) => {
         req.flash('success', 'Welcome to YelpCamp')
         res.redirect('/campgrounds')
     } catch (e) {
-        req.flash('error', 'Username or email already exists')
+        req.flash('error', e.message)
         res.redirect('/register')
     }
 

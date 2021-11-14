@@ -6,8 +6,9 @@ const functions = require('../helpers/functionHelpers')
 const campground = require('../models/campground')
 const catchAsync = functions.catchAsync
 const validateReview = functions.validateReview
+const isLoggedIn = functions.isLoggedIn
 
-router.post('/', validateReview, catchAsync(async (req, res) => {
+router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     const { body, rating } = req.body
     const camp = await campground.findById(req.params.campid)
     const rev = new review({ body, rating })
@@ -19,7 +20,7 @@ router.post('/', validateReview, catchAsync(async (req, res) => {
     res.redirect(`/campgrounds/${camp.id}`)
 }))
 
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
     const reviewId = req.params.id
     await review.findByIdAndDelete(reviewId)
     const campId = req.params.campid
