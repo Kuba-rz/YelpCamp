@@ -73,6 +73,7 @@ app.listen(3000, () => {
 app.use((req, res, next) => {
     res.locals.success = req.flash('success')
     res.locals.error = req.flash('error')
+    res.locals.currentUser = req.user
     next()
 })
 
@@ -80,6 +81,12 @@ app.use((req, res, next) => {
 app.get('/', (req, res) => {
     res.locals.title = 'Home'
     res.render('campgrounds/homepage')
+})
+
+app.get('/logout', (req, res) => {
+    req.logout()
+    req.flash('success', 'Succesfully logged out')
+    res.redirect('/campgrounds')
 })
 
 
