@@ -3,11 +3,13 @@ const router = express.Router()
 
 const campground = require('../models/campground')
 const functions = require('../helpers/functionHelpers')
+const { date } = require('joi')
 const catchAsync = functions.catchAsync
 const validateCampground = functions.validateCampground
 const isLoggedIn = functions.isLoggedIn
 
 router.get('/', catchAsync(async (req, res) => {
+    req.session.bla = 'hi'
     res.locals.title = 'Campgrounds'
     const foundCampgrounds = await campground.find({})
     res.render('campgrounds/campgrounds', { foundCampgrounds })
@@ -18,7 +20,7 @@ router.get('/new', isLoggedIn, (req, res) => {
     res.render('campgrounds/new')
 })
 
-router.get('/edit', catchAsync(async (req, res) => {
+router.get('/edit', isLoggedIn, catchAsync(async (req, res) => {
     const id = req.query.id
     const camp = await campground.findById(id)
     res.locals.title = 'Edit'
