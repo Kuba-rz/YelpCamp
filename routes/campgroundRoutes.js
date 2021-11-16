@@ -7,6 +7,7 @@ const { date } = require('joi')
 const catchAsync = functions.catchAsync
 const validateCampground = functions.validateCampground
 const isLoggedIn = functions.isLoggedIn
+const isOwner = functions.isOwner
 const User = require('../models/user')
 
 router.get('/', catchAsync(async (req, res) => {
@@ -21,7 +22,7 @@ router.get('/new', isLoggedIn, (req, res) => {
     res.render('campgrounds/new')
 })
 
-router.get('/edit', isLoggedIn, catchAsync(async (req, res) => {
+router.get('/edit', isLoggedIn, isOwner, catchAsync(async (req, res) => {
     const id = req.query.id
     const camp = await campground.findById(id)
     res.locals.title = 'Edit'
@@ -50,15 +51,15 @@ router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, nex
     res.redirect(`/campgrounds/${newCamp._id}`)
 }))
 
-router.put('/:id', validateCampground, catchAsync(async (req, res) => {
+router.put('/:id', isLoggedIn, isOwner, validateCampground, catchAsync(async (req, res) => {
     const id = req.params.id
     const { title, price, description, location } = req.body
-    const camp = await campground.findByIdAndUpdate(id, { title, price, description, location }, { runValidators: true })
+    await campground.findByIdAndUpdate(id, { title, price, description, location }, { runValidators: true })
     res.redirect(`/campgrounds/${id}`)
 }))
 
 //Route to delete a specific campground
-router.delete('/:id', catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isOwner, catchAsync(async (req, res) => {
     const id = req.params.id
     await campground.findByIdAndDelete(id)
     req.flash('success', 'Campground has been succesfully deleted')

@@ -1,10 +1,25 @@
 const joi = require('joi')
 const expressError = require('./expressError')
 
+const campground = require('../models/campground')
+
 function catchAsync(fn) {
     return function (req, res, next) {
         fn(req, res, next).catch(err => next(err))
     }
+}
+
+async function isOwner(req, res, next) {
+    const id = req.params.id || req.query.id
+    console.log(id)
+    const camp = await campground.findById(id)
+    console.log('****************')
+    console.log(camp)
+    if (!camp.owner.equals(req.user._id)) {
+        req.flash('error', 'Unauthorized access')
+        return res.redirect(`/campgrounds/${id}`)
+    }
+    next()
 }
 
 function isLoggedIn(req, res, next) {
@@ -55,5 +70,6 @@ module.exports = {
     catchAsync,
     validateCampground,
     validateReview,
-    isLoggedIn
+    isLoggedIn,
+    isOwner
 }
