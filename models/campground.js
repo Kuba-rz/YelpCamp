@@ -29,7 +29,12 @@ const campgroundSchema = new schema({
             type: schema.Types.ObjectId,
             ref: 'Review'
         }
-    ]
+    ],
+    owner: {
+        type: schema.Types.ObjectId,
+        ref: 'User',
+        required: true
+    }
 })
 
 campgroundSchema.post('findOneAndDelete', async camp => {

@@ -20,15 +20,22 @@
                         $<%=camp.price%> per night
                     </li>
                 </ul>
-                <div class="card-body">
-                    <button class='btn btn-secondary card-link'><a
-                            href='/campgrounds/edit?id=<%=camp.id%>'>Edit</a></button>
-                    <form class='inline' action="/campgrounds/<%=camp.id%>?_method=DELETE" method='POST'>
-                        <button class='btn card-link btn-danger'>Delete</button>
-                    </form>
-                    <button class='btn btn-primary card-link'><a href='/campgrounds'>All
-                            campgrounds</a></button>
-                </div>
+                <% if (currentUser && camp.owner && currentUser.id==camp.owner.id) { %>
+                    <div class="card-body">
+                        <button class='btn btn-secondary card-link'><a
+                                href='/campgrounds/edit?id=<%=camp.id%>'>Edit</a></button>
+                        <form class='inline' action="/campgrounds/<%=camp.id%>?_method=DELETE" method='POST'>
+                            <button class='btn card-link btn-danger'>Delete</button>
+                        </form>
+                        <button class='btn btn-primary card-link'><a href='/campgrounds'>All
+                                campgrounds</a></button>
+                    </div>
+                    <% } else { %>
+                        <li class="list-group-item text-secondary">
+                            Submitted by: <%= camp.owner.username %>
+                        </li>
+                        <% } %>
+
             </div>
         </div>
         <div class="col-4">

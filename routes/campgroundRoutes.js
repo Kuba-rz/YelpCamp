@@ -7,6 +7,7 @@ const { date } = require('joi')
 const catchAsync = functions.catchAsync
 const validateCampground = functions.validateCampground
 const isLoggedIn = functions.isLoggedIn
+const User = require('../models/user')
 
 router.get('/', catchAsync(async (req, res) => {
     req.session.bla = 'hi'
@@ -30,7 +31,7 @@ router.get('/edit', isLoggedIn, catchAsync(async (req, res) => {
 router.get('/:id', catchAsync(async (req, res) => {
     const id = req.params.id
     try {
-        const camp = await campground.findById(id).populate('reviews')
+        const camp = await campground.findById(id).populate('reviews').populate('owner')
         res.locals.title = camp.title
         res.render('campgrounds/single campground', { camp })
     } catch {
@@ -41,9 +42,10 @@ router.get('/:id', catchAsync(async (req, res) => {
 
 router.post('/', isLoggedIn, validateCampground, catchAsync(async (req, res, next) => {
     const { title, price, image, description, location } = req.body
-    res.locals.title = 'Error'
-    const newCamp = new campground({ title, price, image, description, location })
+    const owner = await User.findById(req.user._id)
+    const newCamp = new campground({ title, price, image, description, location, owner })
     await newCamp.save()
+    res.locals.title = 'Add'
     req.flash('success', 'New campground has been succesfully added')
     res.redirect(`/campgrounds/${newCamp._id}`)
 }))
