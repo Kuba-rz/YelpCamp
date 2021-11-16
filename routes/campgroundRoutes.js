@@ -32,7 +32,12 @@ router.get('/edit', isLoggedIn, isOwner, catchAsync(async (req, res) => {
 router.get('/:id', catchAsync(async (req, res) => {
     const id = req.params.id
     try {
-        const camp = await campground.findById(id).populate('reviews').populate('owner')
+        const camp = await campground.findById(id).populate('owner').populate({
+            path: 'reviews',
+            populate: {
+                path: 'owner'
+            }
+        })
         res.locals.title = camp.title
         res.render('campgrounds/single campground', { camp })
     } catch {

@@ -4,15 +4,17 @@ const router = express.Router({ mergeParams: true })
 const review = require('../models/review')
 const functions = require('../helpers/functionHelpers')
 const campground = require('../models/campground')
+const User = require('../models/user')
 const catchAsync = functions.catchAsync
 const validateReview = functions.validateReview
 const isLoggedIn = functions.isLoggedIn
+const isOwner = functions.isOwnerReview
 
 router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     const { body, rating } = req.body
     const camp = await campground.findById(req.params.campid)
-    const rev = new review({ body, rating })
-    console.log(req.params.campid)
+    const owner = await User.findById(req.user._id)
+    const rev = new review({ body, rating, owner })
     camp.reviews.push(rev)
     const result = await camp.save()
     await rev.save()
@@ -20,7 +22,7 @@ router.post('/', isLoggedIn, validateReview, catchAsync(async (req, res) => {
     res.redirect(`/campgrounds/${camp.id}`)
 }))
 
-router.delete('/:id', isLoggedIn, catchAsync(async (req, res) => {
+router.delete('/:id', isLoggedIn, isOwner, catchAsync(async (req, res) => {
     const reviewId = req.params.id
     await review.findByIdAndDelete(reviewId)
     const campId = req.params.campid

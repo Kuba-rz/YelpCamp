@@ -2,6 +2,7 @@ const joi = require('joi')
 const expressError = require('./expressError')
 
 const campground = require('../models/campground')
+const Review = require('../models/review')
 
 function catchAsync(fn) {
     return function (req, res, next) {
@@ -13,11 +14,19 @@ async function isOwner(req, res, next) {
     const id = req.params.id || req.query.id
     console.log(id)
     const camp = await campground.findById(id)
-    console.log('****************')
-    console.log(camp)
     if (!camp.owner.equals(req.user._id)) {
         req.flash('error', 'Unauthorized access')
         return res.redirect(`/campgrounds/${id}`)
+    }
+    next()
+}
+
+async function isOwnerReview(req, res, next) {
+    const reviewId = req.params.id
+    const review = await Review.findById(reviewId)
+    if (!review.owner.equals(req.user._id)) {
+        req.flash('error', 'Unauthorized access')
+        return res.redirect('/campgrounds')
     }
     next()
 }
@@ -71,5 +80,6 @@ module.exports = {
     validateCampground,
     validateReview,
     isLoggedIn,
-    isOwner
+    isOwner,
+    isOwnerReview
 }

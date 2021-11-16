@@ -6,7 +6,11 @@ const reviewSchema = new schema({
         type: String,
         required: true
     },
-    rating: Number
+    rating: Number,
+    owner: {
+        type: schema.Types.ObjectId,
+        ref: 'User'
+    }
 })
 
 module.exports = mongoose.model('Review', reviewSchema)

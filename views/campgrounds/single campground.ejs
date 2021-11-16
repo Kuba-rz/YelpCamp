@@ -64,23 +64,28 @@
                 </div>
             </form>
             <ul>
-                <h3>Reviews:</h3>
+                <h3 class='mt-3'>Reviews:</h3>
                 <hr>
                 <% for (let review of camp.reviews){ %>
-                    <p class='mb-1'><b>Review:</b>
+                    <h5 class='card-title mb-2'><b>Rating:</b>
+                        <%=review.rating%>
+                    </h5>
+                    <h6 class='card-subtitle text-muted mb-2'>
+                        By: <%= review.owner.username %>
+                    </h6>
+                    <p class='mb-3'><b>Review:</b>
                         <span class='review-body'>
                             <%=review.body%>
                         </span>
                     </p>
                     <div class='review-delete-div'>
-                        <p class='mb-3'><b>Rating:</b>
-                            <%=review.rating%>
-                                <form class='review-delete-form'
-                                    action="/campgrounds/<%=camp.id%>/review/<%=review.id%>?_method=DELETE"
-                                    method='POST'>
-                                    <button id='review-delete-btn' class='btn btn-danger'>Delete</button>
-                                </form>
-                        </p>
+
+                        <% if (currentUser && currentUser.id==review.owner._id){ %>
+                            <form class='review-delete-form'
+                                action="/campgrounds/<%=camp.id%>/review/<%=review.id%>?_method=DELETE" method='POST'>
+                                <button id='review-delete-btn' class='btn btn-danger'>Delete</button>
+                            </form>
+                            <% } %>
                     </div>
                     <hr>
                     <% } %>
