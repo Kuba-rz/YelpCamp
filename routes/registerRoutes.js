@@ -5,27 +5,10 @@ const functions = require('../helpers/functionHelpers')
 const catchAsync = functions.catchAsync
 const User = require('../models/user')
 
-router.get('/', (req, res) => {
-    res.locals.title = 'Register'
-    res.render('user/register')
-})
+const registerController = require('../controllers/register')
 
-router.post('/', catchAsync(async (req, res) => {
-    const { email, username, password } = req.body
-    const user = new User({ email, username })
-    try {
-        const regUser = await User.register(user, password)
-        req.login(regUser, err => {
-            if (err) return next(err)
-            req.flash('success', 'Welcome to YelpCamp')
-            res.redirect('/campgrounds')
-        })
-    } catch (e) {
-        req.flash('error', e.message)
-        res.redirect('/register')
-    }
+router.get('/', registerController.renderRegisterForm)
 
-
-}))
+router.post('/', catchAsync(registerController.register))
 
 module.exports = router
