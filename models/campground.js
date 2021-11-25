@@ -11,10 +11,12 @@ const campgroundSchema = new schema({
         type: Number,
         required: true
     },
-    image: {
-        type: String,
-        required: true
-    }
+    images: [
+        {
+            url: String,
+            filename: String
+        }
+    ]
     ,
     description: {
         type: String,

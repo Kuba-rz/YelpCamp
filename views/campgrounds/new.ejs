@@ -4,7 +4,8 @@
     <div class='row justify-content-center'>
         <div class='col-6'>
             <h1 class='text-center display-5'>Add a new campground</h1>
-            <form action='/campgrounds' method='POST' novalidate class='validation-required'>
+            <form action='/campgrounds' method='POST' enctype='multipart/form-data' novalidate
+                class='validation-required'>
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Title"
@@ -22,8 +23,9 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="image">Image url</label>
-                    <input type="text" class="form-control" id="image" name='image' placeholder="Image" required>
+                    <!--<label for="image">Image url</label>
+                    <input type="text" class="form-control" id="image" name='image' placeholder="Image" required>-->
+                    <input type="file" name="image" id="image" multiple>
                     <div class="invalid-feedback">
                         Please include an image of the campground
                     </div>

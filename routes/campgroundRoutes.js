@@ -10,6 +10,11 @@ const validateCampground = functions.validateCampground
 const isLoggedIn = functions.isLoggedIn
 const isOwner = functions.isOwner
 
+const { storage, cloudinary } = require('../cloudinary/index')
+
+const multer = require('multer')
+const upload = multer({ storage: storage })
+
 
 const campgroundController = require('../controllers/campground')
 
@@ -21,7 +26,7 @@ router.get('/edit', isLoggedIn, isOwner, catchAsync(campgroundController.renderE
 
 router.get('/:id', catchAsync(campgroundController.renderOneCamp))
 
-router.post('/', isLoggedIn, validateCampground, catchAsync(campgroundController.createCampground))
+router.post('/', isLoggedIn, upload.array('image'), validateCampground, catchAsync(campgroundController.createCampground))
 
 router.put('/:id', isLoggedIn, isOwner, validateCampground, catchAsync(campgroundController.editCampground))
 

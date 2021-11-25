@@ -26,11 +26,11 @@ async function seed() {
         let place = words[1][Math.floor(Math.random() * words[1].length)]
         let city = cities[i]
         let title = `${descriptor} ${place}`
-        let image = 'https://source.unsplash.com/collection/4139277'
+        let image = { url: 'https://source.unsplash.com/collection/4139277', filename: 'UNKNOWN' }
         title = title[0].toUpperCase() + title.slice(1).toLowerCase()
         let description = 'Very beautiful and cosy place, for real adventurers. Definetely check this one out!'
         const owner = await User.findOne({ username: 'lol' })
-        let newCampground = new campground({ title: title, price: 25, image: image, description: description, location: city.city, owner })
+        let newCampground = new campground({ title: title, price: 25, images: image, description: description, location: city.city, owner })
         await newCampground.save()
 
     }

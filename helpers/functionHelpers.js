@@ -46,10 +46,10 @@ function validateCampground(req, res, next) {
         title: joi.string().required(),
         price: joi.number().min(0).required(),
         description: joi.string().required(),
-        image: joi.string().required(),
+        //  image: joi.string().required(),
         location: joi.string().required()
     })
-    const { error } = campgroundSchema.validate({ title, price, description, image, location })
+    const { error } = campgroundSchema.validate({ title, price, description, location })
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
         throw new expressError(msg, 400)

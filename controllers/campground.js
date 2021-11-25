@@ -2,7 +2,6 @@ const campground = require('../models/campground')
 const User = require('../models/user')
 
 module.exports.index = async (req, res) => {
-    req.session.bla = 'hi'
     res.locals.title = 'Campgrounds'
     const foundCampgrounds = await campground.find({})
     res.render('campgrounds/campgrounds', { foundCampgrounds })
@@ -40,7 +39,8 @@ module.exports.renderOneCamp = async (req, res) => {
 module.exports.createCampground = async (req, res, next) => {
     const { title, price, image, description, location } = req.body
     const owner = await User.findById(req.user._id)
-    const newCamp = new campground({ title, price, image, description, location, owner })
+    const newCamp = new campground({ title, price, description, location, owner })
+    newCamp.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     await newCamp.save()
     res.locals.title = 'Add'
     req.flash('success', 'New campground has been succesfully added')
