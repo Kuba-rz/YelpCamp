@@ -50,3 +50,7 @@ div.mt button {
  .review-label {
     font-size: 1.7em;
  }
+
+ .col-4 img {
+     max-height: 400px;
+ }

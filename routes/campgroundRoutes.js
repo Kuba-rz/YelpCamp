@@ -28,7 +28,7 @@ router.get('/:id', catchAsync(campgroundController.renderOneCamp))
 
 router.post('/', isLoggedIn, upload.array('image'), validateCampground, catchAsync(campgroundController.createCampground))
 
-router.put('/:id', isLoggedIn, isOwner, validateCampground, catchAsync(campgroundController.editCampground))
+router.put('/:id', isLoggedIn, isOwner, upload.array('image'), validateCampground, catchAsync(campgroundController.editCampground))
 
 //Route to delete a specific campground
 router.delete('/:id', isLoggedIn, isOwner, catchAsync(campgroundController.deleteCampground))

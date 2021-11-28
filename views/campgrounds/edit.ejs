@@ -4,7 +4,8 @@
         <div class='col-6'>
             <h1 class='text-center display-5'>Edit <%=camp.title%>
             </h1>
-            <form action='/campgrounds/<%=camp.id%>?_method=PUT' method='POST' novalidate class='validation-required'>
+            <form action='/campgrounds/<%=camp.id%>?_method=PUT' method='POST' enctype='multipart/form-data' novalidate
+                class='validation-required'>
                 <div class="form-group">
                     <label for="title">Title</label>
                     <input type="text" class="form-control" id="title" aria-describedby="emailHelp" placeholder="Title"
@@ -22,9 +23,8 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="image">Image url</label>
-                    <input type="text" class="form-control" id="image" name='image' placeholder="Image"
-                        value='<%=camp.image%>' required>
+                    <label for="image">Add images</label>
+                    <input class='form-control' type="file" multiple id="image" name='image'>
                     <div class="invalid-feedback">
                         Please include an image of the campground
                     </div>
@@ -44,6 +44,15 @@
                     <div class="invalid-feedback">
                         Please include the price for a night
                     </div>
+                </div>
+                <div class='mb-3'>
+                    <% camp.images.forEach((img,i)=> { %>
+                        <img class='img-thumbnail' src="<%=img.url%>" alt="">
+                        <div class="form-check-inline">
+                            <input type="checkbox" name="deleteImages[]" id="image-<%=i%>" value='<%=img.filename%>'>
+                        </div>
+                        <label for="image-<%=i%>">Delete</label>
+                        <% })%>
                 </div>
                 <div class="row d-flex justify-content-center">
                     <div class="col-2">
