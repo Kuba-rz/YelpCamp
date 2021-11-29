@@ -1,5 +1,9 @@
 <% layout ('partials/boiletplate.ejs') %>
 
+    <script>
+        const mapboxToken = '<%-process.env.MAPBOX_TOKEN%>'
+    </script>
+
     <link rel="stylesheet" href="/css/stars.css">
 
     <h1 class='text-center display-3'>
@@ -8,6 +12,7 @@
     <div class="row justify-content-around">
 
         <div class="col-6 mb-3 mt-3 justify-content-center">
+            <div id='map' style='width: 400px; height: 300px;'></div>
             <div class="card mb-3">
                 <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">

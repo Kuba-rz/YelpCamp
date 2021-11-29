@@ -2,6 +2,9 @@ const campground = require('../models/campground')
 const User = require('../models/user')
 const { cloudinary } = require('../cloudinary/index')
 
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const geocoding = mbxGeocoding({ accessToken: process.env.MAPBOX_TOKEN })
+
 module.exports.index = async (req, res) => {
     res.locals.title = 'Campgrounds'
     const foundCampgrounds = await campground.find({})
@@ -39,8 +42,13 @@ module.exports.renderOneCamp = async (req, res) => {
 
 module.exports.createCampground = async (req, res, next) => {
     const { title, price, description, location } = req.body
+    const geolocation = await geocoding.forwardGeocode({
+        query: location,
+        limit: 1
+    }).send()
     const owner = await User.findById(req.user._id)
     const newCamp = new campground({ title, price, description, location, owner })
+    newCamp.geometry = geolocation.body.features[0].geometry
     newCamp.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
     await newCamp.save()
     res.locals.title = 'Add'
@@ -51,8 +59,8 @@ module.exports.createCampground = async (req, res, next) => {
 module.exports.editCampground = async (req, res) => {
     const id = req.params.id
     const { title, price, description, location } = req.body
-    const camp = await campground.findByIdAndUpdate(id, { title, price, description, location }, { runValidators: true })
     const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }))
+    const camp = await campground.findByIdAndUpdate(id, { title, price, description, location })
     camp.images.push(...imgs)
     if (req.body.deleteImages && req.body.deleteImages.length > 0) {
         for (let filename of req.body.deleteImages) {

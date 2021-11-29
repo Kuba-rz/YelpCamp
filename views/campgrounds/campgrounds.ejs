@@ -6,7 +6,9 @@
         <div class="card mb-2">
             <div class="row">
                 <div class="col-4">
-                    <img src="<%=camp.images[0].url%>" alt="" class="card-img">
+                    <% if (camp.images[0]) { %>
+                        <img src="<%=camp.images[0].url%>" alt="" class="card-img">
+                        <% } %>
                 </div>
                 <div class="col-8 card-body">
                     <h5 class='card-title'>

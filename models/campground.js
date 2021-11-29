@@ -29,6 +29,17 @@ const campgroundSchema = new schema({
         type: String,
         required: true
     },
+    geometry: {
+        type: {
+            type: String,
+            enum: ["Point"],
+            required: true
+        },
+        coordinates: {
+            type: [Number],
+            required: true
+        }
+    },
     reviews: [
         {
             type: schema.Types.ObjectId,

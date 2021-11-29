@@ -42,14 +42,15 @@ function isLoggedIn(req, res, next) {
 
 function validateCampground(req, res, next) {
     const { title, price, image, description, location } = req.body
+    const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }))
     const campgroundSchema = joi.object({
         title: joi.string().required(),
         price: joi.number().min(0).required(),
         description: joi.string().required(),
-        //  image: joi.string().required(),
+        images: joi.any().required(),
         location: joi.string().required()
     })
-    const { error } = campgroundSchema.validate({ title, price, description, location })
+    const { error } = campgroundSchema.validate({ title, price, description, images: imgs, location })
     if (error) {
         const msg = error.details.map(el => el.message).join(',')
         throw new expressError(msg, 400)
