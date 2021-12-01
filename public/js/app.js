@@ -18,10 +18,22 @@
         })
 })()
 
+console.log(camp)
 mapboxgl.accessToken = mapboxToken
 const map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/outdoors-v11', // style URL
-    center: [-74.5, 40], // starting position [lng, lat]
-    zoom: 4 // starting zoom
+    center: camp.geometry.coordinates, // starting position [lng, lat]
+    zoom: 8 // starting zoom
 });
+
+
+const marker = new mapboxgl.Marker()
+    .setLngLat(camp.geometry.coordinates)
+    .setPopup(
+        new mapboxgl.Popup({ offset: 25 }) // add popups
+            .setHTML(
+                camp.title
+            )
+    )
+    .addTo(map)

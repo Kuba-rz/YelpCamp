@@ -50,6 +50,7 @@ module.exports.createCampground = async (req, res, next) => {
     const newCamp = new campground({ title, price, description, location, owner })
     newCamp.geometry = geolocation.body.features[0].geometry
     newCamp.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
+    console.log(newCamp.geometry)
     await newCamp.save()
     res.locals.title = 'Add'
     req.flash('success', 'New campground has been succesfully added')

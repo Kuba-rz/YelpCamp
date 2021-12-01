@@ -2,6 +2,7 @@
 
     <script>
         const mapboxToken = '<%-process.env.MAPBOX_TOKEN%>'
+        const camp = <%-JSON.stringify(camp)%>
     </script>
 
     <link rel="stylesheet" href="/css/stars.css">
@@ -12,7 +13,6 @@
     <div class="row justify-content-around">
 
         <div class="col-6 mb-3 mt-3 justify-content-center">
-            <div id='map' style='width: 400px; height: 300px;'></div>
             <div class="card mb-3">
                 <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
@@ -66,6 +66,7 @@
             <a href="/campgrounds">All campgrounds</a>
         </div>
         <div class="col-4">
+            <div class='mt-3 mb-5' id='map' style='width: 400px; height: 300px;'></div>
             <form action='/campgrounds/<%=camp.id%>/review' method='POST' novalidate class='validation-required'>
                 <h2 class='mt-3 text-center'>Leave a review for <%=camp.title.toLowerCase()%>
                 </h2>
