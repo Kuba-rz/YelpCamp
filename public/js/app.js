@@ -18,9 +18,8 @@
         })
 })()
 
-console.log(camp)
 mapboxgl.accessToken = mapboxToken
-const map = new mapboxgl.Map({
+let map = new mapboxgl.Map({
     container: 'map', // container ID
     style: 'mapbox://styles/mapbox/outdoors-v11', // style URL
     center: camp.geometry.coordinates, // starting position [lng, lat]

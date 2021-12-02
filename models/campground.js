@@ -11,6 +11,8 @@ imageSchema.virtual('thumbnail').get(function () {
     return this.url.replace('/upload', '/upload/w_200')
 })
 
+const opts = { toJSON: { virtuals: true } }
+
 const campgroundSchema = new schema({
     title: {
         type: String,
@@ -51,6 +53,10 @@ const campgroundSchema = new schema({
         ref: 'User',
         required: true
     }
+}, opts)
+
+campgroundSchema.virtual('properties.popupText').get(function () {
+    return `<h4><a href='/campgrounds/${this._id}'>${this.title}</a></h4>`
 })
 
 campgroundSchema.post('findOneAndDelete', async camp => {
