@@ -11,7 +11,7 @@ button a,button a:hover {
     text-decoration: none;
 }
 
-.navbar, .footer {
+#main-nav, #main-footer {
     background-color: #2D2424;
 }
 

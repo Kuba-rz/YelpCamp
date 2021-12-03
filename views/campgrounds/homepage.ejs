@@ -1,11 +1,42 @@
-<% layout ('partials/boiletplate.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
 
-    <h1 class='display-1'>Welcome to Yelp Camp!</h1>
-    <div>
-        <label for="all">Show all campgrounds:</label>
-        <button class='btn btn-primary' id='all'><a href='/campgrounds'>Show</a></button>
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="/css/home.css">
+    <title>YelpCamp</title>
+</head>
+
+<body class='text-center text-white bg-dark'>
+    <%- include('../partials/navbar') %>
+    <div class=" d-flex justify-content-center">
+<main id="body-div">
+        <h1 class='display-3'>YelpCamp</h1>
+        <p class="lead">Welcome to YelpCamp</p>
+        <br>
+        <p>Lorem, ipsum dolor sit amet consectetur adipisicing elit. Enim, minus. Omnis veritatis fuga nostrum natus laboriosam recusandae quae distinctio quibusdam, quasi maiores minus architecto accusantium nobis praesentium animi ratione incidunt?</p>
+        <a class='btn text-white btn-secondary' href='/campgrounds'">All campgrounds</a>
+</main>
+</div>
+
+<footer id='main-footer' class='text-center footer fixed-bottom py-3 mt-auto w-100 mt-5'>
+    <div class="container">
+        <span>&copy; Yelp Camp</span>
     </div>
-    <div>
-        <label for="add">Add a new campground:</label>
-        <button class='btn btn-primary' id='add'><a href='/campgrounds/new'>Add</a></button>
-    </div>
+</footer>
+
+
+
+
+
+</body>
+<script src="/js/app.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+    crossorigin="anonymous"></script>
+
+</html>
