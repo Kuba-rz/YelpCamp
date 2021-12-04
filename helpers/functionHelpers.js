@@ -45,11 +45,11 @@ function validateCampground(req, res, next) {
     const { title, price, image, description, location } = req.body
     const imgs = req.files.map(f => ({ url: f.path, filename: f.filename }))
     const campgroundSchema = joi.object({
-        title: joi.string().required(),
+        title: joi.string().required().escapeHTML(),
         price: joi.number().min(0).required(),
-        description: joi.string().required(),
+        description: joi.string().required().escapeHTML(),
         images: joi.any().required(),
-        location: joi.string().required()
+        location: joi.string().required().escapeHTML()
     })
     const { error } = campgroundSchema.validate({ title, price, description, images: imgs, location })
     if (error) {
@@ -64,7 +64,7 @@ function validateCampground(req, res, next) {
 function validateReview(req, res, next) {
     const { body, rating } = req.body
     const reviewSchema = joi.object({
-        body: joi.string().required(),
+        body: joi.string().required().escapeHTML(),
         rating: joi.number().min(1).max(5).required(),
     })
     const { error } = reviewSchema.validate({ body, rating })
@@ -78,8 +78,8 @@ function validateReview(req, res, next) {
 }
 
 const extension = (joi) => ({
-    type:'string',
-    base:joi.string(),
+    type: 'string',
+    base: joi.string(),
     messages: {
         'string.escapeHTML': '{{#label}} must not include HTML!'
     },
@@ -90,7 +90,7 @@ const extension = (joi) => ({
                     allowedTags: [],
                     allowedAttributes: {},
                 });
-                if (clean !== value) return helpers.error('string.escapeHTML', {value})
+                if (clean !== value) return helpers.error('string.escapeHTML', { value })
                 return clean
             }
         }
