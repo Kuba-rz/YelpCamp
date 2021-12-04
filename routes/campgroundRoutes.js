@@ -31,6 +31,6 @@ router.post('/', isLoggedIn, upload.array('image'), validateCampground, catchAsy
 router.put('/:id', isLoggedIn, isOwner, upload.array('image'), validateCampground, catchAsync(campgroundController.editCampground))
 
 //Route to delete a specific campground
-router.delete('/:id', isLoggedIn, isOwner, catchAsync(campgroundController.deleteCampground))
+router.delete('/:id', isLoggedIn, isOwner,  catchAsync(campgroundController.deleteCampground))
 
 module.exports = router

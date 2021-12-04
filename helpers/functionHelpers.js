@@ -1,5 +1,6 @@
-const joi = require('joi')
+const baseJoi = require('joi')
 const expressError = require('./expressError')
+const sanitizeHTML = require('sanitize-html')
 
 const campground = require('../models/campground')
 const Review = require('../models/review')
@@ -75,6 +76,28 @@ function validateReview(req, res, next) {
         next()
     }
 }
+
+const extension = (joi) => ({
+    type:'string',
+    base:joi.string(),
+    messages: {
+        'string.escapeHTML': '{{#label}} must not include HTML!'
+    },
+    rules: {
+        escapeHTML: {
+            validate(value, helpers) {
+                const clean = sanitizeHTML(value, {
+                    allowedTags: [],
+                    allowedAttributes: {},
+                });
+                if (clean !== value) return helpers.error('string.escapeHTML', {value})
+                return clean
+            }
+        }
+    }
+})
+
+const joi = baseJoi.extend(extension)
 
 module.exports = {
     catchAsync,

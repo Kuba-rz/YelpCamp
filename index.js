@@ -12,6 +12,7 @@ const flash = require('connect-flash')
 const passport = require('passport')
 const passportLocal = require('passport-local')
 const User = require('./models/user')
+const mongoSanitize = require('express-mongo-sanitize')
 
 const expressError = require('./helpers/expressError')
 
@@ -62,6 +63,8 @@ app.use(flash())
 
 app.use(passport.initialize())
 app.use(passport.session())
+
+app.use(mongoSanitize())
 
 passport.use(new passportLocal(User.authenticate()))
 
