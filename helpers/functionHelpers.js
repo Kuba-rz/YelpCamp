@@ -13,7 +13,6 @@ function catchAsync(fn) {
 
 async function isOwner(req, res, next) {
     const id = req.params.id || req.query.id
-    console.log(id)
     const camp = await campground.findById(id)
     if (!camp.owner.equals(req.user._id)) {
         req.flash('error', 'Unauthorized access')
