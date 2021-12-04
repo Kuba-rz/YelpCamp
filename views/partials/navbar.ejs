@@ -1,4 +1,5 @@
-<nav id='main-nav' class="mb-3 fixed-top navbar navbar-expand-lg navbar-dark text-white <%= currentUrl === 'http://localhost:3000/' ? '' : 'bg-dark'%>">
+<nav id='main-nav'
+    class="mb-3 fixed-top navbar navbar-expand-lg navbar-dark text-white <%= currentUrl === 'http://localhost:3000/' ? '' : 'bg-dark'%>">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Yelp Camp</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
@@ -7,19 +8,19 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-link active" aria-current="page" href="/">Home</a>
-                <a class="nav-link active" href="/campgrounds">All campgrounds</a>
-                <a class="nav-link active" href="/campgrounds/new">Add new campground</a>
+                <a class="nav-link" aria-current="page" href="/">Home</a>
+                <a class="nav-link" href="/campgrounds">All campgrounds</a>
+                <a class="nav-link" href="/campgrounds/new">Add new campground</a>
             </div>
             <div class="navbar-nav ms-auto">
                 <% if(!currentUser) { %>
-                    <a class="nav-link active" aria-current="page" href="/login">Login</a>
-                    <a class="nav-link active" href="/register">Register</a>
+                    <a class="nav-link" aria-current="page" href="/login">Login</a>
+                    <a class="nav-link" href="/register">Register</a>
                     <% } else { %>
                         <span id='nav-username'>
                             <%= currentUser.username %>
                         </span>
-                        <a class="nav-link active" href="/logout">Logout</a>
+                        <a class="nav-link" href="/logout">Logout</a>
                         <% } %>
             </div>
         </div>

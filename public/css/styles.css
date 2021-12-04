@@ -54,3 +54,7 @@ div.mt button {
  .col-4 img {
      max-height: 400px;
  }
+
+ #user-img {
+     width: 200px;
+ }

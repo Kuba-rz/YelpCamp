@@ -1,7 +1,7 @@
 <% layout ('partials/boiletplate.ejs') %>
 
     <div class='row justify-content-center'>
-        <div class='col-6'>
+        <div class='col-md-6'>
             <h1 class='text-center display-5'>Edit <%=camp.title%>
             </h1>
             <form action='/campgrounds/<%=camp.id%>?_method=PUT' method='POST' enctype='multipart/form-data' novalidate
@@ -45,7 +45,7 @@
                         Please include the price for a night
                     </div>
                 </div>
-                <div class='mb-3'>
+                <div class='mb-3 text-center'>
                     <% camp.images.forEach((img,i)=> { %>
                         <img class='img-thumbnail' src="<%=img.thumbnail%>" alt="">
                         <div class="form-check-inline">
