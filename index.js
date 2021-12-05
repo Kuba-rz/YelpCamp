@@ -25,7 +25,7 @@ const reviewRoutes = require('./routes/reviewRoutes')
 const registerRoutes = require('./routes/registerRoutes')
 const loginRoutes = require('./routes/loginRoutes')
 
-const DBUrl = 'mongodb://localhost:27017/YelpCamp'
+const DBUrl = process.env.mongoAtlasURL || 'mongodb://localhost:27017/YelpCamp'
 
 //Connect the app to mongoose
 async function connectMongo() {
@@ -54,11 +54,13 @@ app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+const secret = process.env.SECRET || 'thisisnotagoodsecret'
+
 const store = MongoStore.create({
     mongoUrl: DBUrl,
     touchAfter: 24 * 60 * 60,
     crypto: {
-        secret: 'thisisnotagoodsecret'
+        secret
     }
 })
 
@@ -69,7 +71,7 @@ store.on('error', function (e) {
 const sessionConfig = {
     store,
     name: 'session',
-    secret: 'thisisnotagoodsecret',
+    secret,
     resave: false,
     saveUninitialized: true,
     cookie: {
