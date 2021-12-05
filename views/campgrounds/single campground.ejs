@@ -12,7 +12,7 @@
     </h1>
     <div class="row justify-content-around">
 
-        <div class="col-6 mb-3 mt-3 justify-content-center">
+        <div class="col-md-6 mb-3 mt-3 justify-content-center">
             <div class="card mb-3">
                 <div id="campgroundCarousel" class="carousel slide" data-bs-ride="carousel">
                     <div class="carousel-inner">
@@ -64,7 +64,7 @@
 
             </div>
         </div>
-        <div class="col-4">
+        <div class="col-md-4">
             <div class='mt-3 mb-5' id='map' style='width: 400px; height: 300px;'></div>
             <form action='/campgrounds/<%=camp.id%>/review' method='POST' novalidate class='validation-required'>
                 <h2 class='mt-3 text-center'>Leave a review for <%=camp.title.toLowerCase()%>

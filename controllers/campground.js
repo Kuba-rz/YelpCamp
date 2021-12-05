@@ -50,7 +50,6 @@ module.exports.createCampground = async (req, res, next) => {
     const newCamp = new campground({ title, price, description, location, owner })
     newCamp.geometry = geolocation.body.features[0].geometry
     newCamp.images = req.files.map(f => ({ url: f.path, filename: f.filename }))
-    console.log(newCamp.geometry)
     await newCamp.save()
     res.locals.title = 'Add'
     req.flash('success', 'New campground has been succesfully added')
@@ -76,7 +75,6 @@ module.exports.editCampground = async (req, res) => {
 module.exports.deleteCampground = async (req, res) => {
     const id = req.params.id
     const camp = await campground.findById(id)
-    console.log(camp.images)
     if (camp.images.length) {
         for (let img of camp.images) {
             cloudinary.uploader.destroy(img.filename)

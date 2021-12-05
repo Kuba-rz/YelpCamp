@@ -2,6 +2,7 @@ if (process.env.NODE_ENV !== 'production') {
     require('dotenv').config()
 }
 
+
 const express = require('express')
 const mongoose = require('mongoose')
 const methodOverride = require('method-override')
@@ -14,6 +15,8 @@ const passportLocal = require('passport-local')
 const User = require('./models/user')
 const mongoSanitize = require('express-mongo-sanitize')
 const helmet = require('helmet')
+const helmetConfig = require('./helpers/helmet')
+const MongoStore = require('connect-mongo');
 
 const expressError = require('./helpers/expressError')
 
@@ -22,11 +25,12 @@ const reviewRoutes = require('./routes/reviewRoutes')
 const registerRoutes = require('./routes/registerRoutes')
 const loginRoutes = require('./routes/loginRoutes')
 
+const DBUrl = 'mongodb://localhost:27017/YelpCamp'
 
 //Connect the app to mongoose
 async function connectMongo() {
     try {
-        await mongoose.connect('mongodb://localhost:27017/YelpCamp');
+        await mongoose.connect(DBUrl);
         console.log('All good and connected')
     }
     catch (err) {
@@ -44,57 +48,26 @@ app.set('view engine', 'ejs')
 
 app.engine('ejs', ejsMate)
 
-const scriptSrcUrls = [
-    "https://stackpath.bootstrapcdn.com/",
-    "https://api.tiles.mapbox.com/",
-    "https://api.mapbox.com/",
-    "https://kit.fontawesome.com/",
-    "https://cdnjs.cloudflare.com/",
-    "https://cdn.jsdelivr.net",
-];
-const styleSrcUrls = [
-    "https://kit-free.fontawesome.com/",
-    "https://stackpath.bootstrapcdn.com/",
-    "https://api.mapbox.com/",
-    "https://api.tiles.mapbox.com/",
-    "https://fonts.googleapis.com/",
-    "https://use.fontawesome.com/",
-    "https://cdn.jsdelivr.net",
-];
-const connectSrcUrls = [
-    "https://api.mapbox.com/",
-    "https://a.tiles.mapbox.com/",
-    "https://b.tiles.mapbox.com/",
-    "https://events.mapbox.com/",
-];
-const fontSrcUrls = [];
-app.use(
-    helmet.contentSecurityPolicy({
-        directives: {
-            defaultSrc: [],
-            connectSrc: ["'self'", ...connectSrcUrls],
-            scriptSrc: ["'unsafe-inline'", "'self'", ...scriptSrcUrls],
-            styleSrc: ["'self'", "'unsafe-inline'", ...styleSrcUrls],
-            workerSrc: ["'self'", "blob:"],
-            objectSrc: [],
-            imgSrc: [
-                "'self'",
-                "blob:",
-                "data:",
-                "https://res.cloudinary.com/duh1ufu4r/image/upload/", //SHOULD MATCH YOUR CLOUDINARY ACCOUNT! 
-                "https://images.unsplash.com/",
-                "https://source.unsplash.com/collection/",
-            ],
-            fontSrc: ["'self'", ...fontSrcUrls],
-        },
-    })
-);
+
 app.use(methodOverride('_method'))
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 
+const store = MongoStore.create({
+    mongoUrl: DBUrl,
+    touchAfter: 24 * 60 * 60,
+    crypto: {
+        secret: 'thisisnotagoodsecret'
+    }
+})
+
+store.on('error', function (e) {
+    console.log('SESSION ERROR', e)
+})
+
 const sessionConfig = {
+    store,
     name: 'session',
     secret: 'thisisnotagoodsecret',
     resave: false,
@@ -112,6 +85,9 @@ app.use(passport.initialize())
 app.use(passport.session())
 
 app.use(mongoSanitize())
+
+app.use(helmet())
+app.use(helmetConfig)
 
 
 passport.use(new passportLocal(User.authenticate()))
