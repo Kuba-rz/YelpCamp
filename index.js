@@ -97,8 +97,9 @@ passport.use(new passportLocal(User.authenticate()))
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
+const port = process.env.PORT || 3000
 
-app.listen(3000, () => {
+app.listen(port, () => {
     console.log('Listening on port 3000')
 })
 
